@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Python Pocket Lab</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: #0a0a0f;
+            color: #00f0ff;
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #151520;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #00f0ff;
+            box-shadow: 0 2px 20px rgba(0, 240, 255, 0.2);
+        }
+        
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .status {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .status.ready { color: #00ff88; }
+        .status.loading { color: #ffaa00; }
+        .status.running { color: #ff00ff; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .editor-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        
+        .toolbar {
+            background: #0f0f15;
+            padding: 8px 12px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #1a1a2e;
+            overflow-x: auto;
+        }
+        
+        button {
+            background: #1a1a2e;
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+            background: #00f0ff;
+            color: #0a0a0f;
+        }
+        
+        button.primary {
+            background: #00f0ff;
+            color: #0a0a0f;
+            font-weight: bold;
+        }
+        
+        button.danger {
+            border-color: #ff0055;
+            color: #ff0055;
+        }
+        
+        button.danger:active {
+            background: #ff0055;
+            color: white;
+        }
+        
+        #editor {
+            flex: 1;
+            background: #0f0f15;
+            color: #00f0ff;
+            border: none;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+        }
+        
+        .bottom-panel {
+            height: 35%;
+            display: flex;
+            flex-direction: column;
+            background: #0f0f15;
+        }
+        
+        .panel-tabs {
+            display: flex;
+            background: #151520;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        
+        .tab {
+            padding: 10px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            border-right: 1px solid #1a1a2e;
+            opacity: 0.6;
+        }
+        
+        .tab.active {
+            opacity: 1;
+            background: #1a1a2e;
+            border-bottom: 2px solid #00f0ff;
+        }
+        
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        
+        #output {
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .output-line {
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        
+        .error { color: #ff0055; }
+        .success { color: #00ff88; }
+        .info { color: #ffaa00; }
+        
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .file-card {
+            background: #1a1a2e;
+            border: 1px solid #00f0ff;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .file-card:active {
+            transform: scale(0.95);
+            background: #00f0ff;
+            color: #0a0a0f;
+        }
+        
+        .file-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .file-name {
+            font-size: 11px;
+            word-break: break-all;
+            margin-bottom: 4px;
+        }
+        
+        .file-size {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+        
+        .file-actions {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            display: flex;
+            gap: 4px;
+        }
+        
+        .file-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: #0f0f15;
+            border: 1px solid #00f0ff;
+            color: #00f0ff;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #1a1a2e;
+            border-top-color: #00f0ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0f0f15;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #00f0ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loader">
+        <div class="spinner"></div>
+        <div class="loading-text">INITIALIZING PYTHON 3.11...</div>
+        <div style="margin-top: 10px; font-size: 11px; opacity: 0.6;">Loading Pyodide + Standard Library</div>
+    </div>
+
+    <div class="header">
+        <div class="title">◉ PYTHON LAB</div>
+        <div class="status loading" id="status">LOADING...</div>
+    </div>
+
+    <div class="main-container">
+        <div class="editor-section">
+            <div class="toolbar">
+                <button class="primary" onclick="runCode()">▶ RUN</button>
+                <button onclick="clearEditor()">CLEAR</button>
+                <button onclick="resetCode()">RESET</button>
+                <button onclick="loadTemplate('audio')">🎵 AUDIO</button>
+                <button onclick="loadTemplate('excel')">📊 EXCEL</button>
+                <button onclick="loadTemplate('image')">🎨 IMAGE</button>
+            </div>
+            <textarea id="editor" placeholder="# Python 3.11 - Mobile Edition
+# Type your code here...
+# All files saved to /home/pyodide/ are downloadable
+
+print('Hello Wakanda!')
+
+# Example: Generate WAV audio
+# import numpy as np
+# ... audio code ...
+# with open('output.wav', 'wb') as f:
+#     f.write(audio_data)
+"></textarea>
+        </div>
+
+        <div class="bottom-panel">
+            <div class="panel-tabs">
+                <div class="tab active" onclick="switchTab('console')" id="tab-console">CONSOLE</div>
+                <div class="tab" onclick="switchTab('files')" id="tab-files">FILES (0)</div>
+            </div>
+            
+            <div class="panel-content" id="console-panel">
+                <div id="output"></div>
+            </div>
+            
+            <div class="panel-content hidden" id="files-panel">
+                <div class="files-grid" id="files-grid">
+                    <div class="info">No files generated yet. Run code to create files.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pyodide = null;
+        let generatedFiles = new Map();
+        
+        const defaultCode = `# Welcome to Python Pocket Lab
+# Generate anything - zero restrictions on downloads
+
+import numpy as np
+import wave
+import struct
+
+print("Generating Wakanda EDM beat...")
+
+# Config
+sample_rate = 44100
+duration = 2.0
+t = np.linspace(0, duration, int(sample_rate * duration), False)
+
+# Kick drum (sine sweep)
+freq = 150 * np.exp(-t * 20) + 40
+kick = np.sin(2 * np.pi * freq * t) * np.exp(-t * 5)
+
+# Save as WAV
+kick = (kick * 32767).astype(np.int16)
+with wave.open('wakanda_kick.wav', 'w') as f:
+    f.setnchannels(1)
+    f.setsampwidth(2)
+    f.setframerate(sample_rate)
+    f.writeframes(kick.tobytes())
+
+print("✓ wakanda_kick.wav created!")
+print("Tap file below to download")`;
+
+        async function init() {
+            try {
+                pyodide = await loadPyodide();
+                await pyodide.loadPackage(["numpy", "pandas", "openpyxl", "pillow"]);
+                
+                // Setup file system monitoring
+                setupFileSystem();
+                
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('status').textContent = 'READY';
+                document.getElementById('status').className = 'status ready';
+                
+                log('Python 3.11 + NumPy + Pandas + Pillow loaded', 'success');
+                log('All file types supported: WAV, Excel, PNG, CSV, JSON, etc.', 'info');
+                
+            } catch (e) {
+                log('Failed to load: ' + e.message, 'error');
+            }
+        }
+        
+        function setupFileSystem() {
+            // Patch open() to track files
+            pyodide.runPython(`
+                import sys
+                import os
+                import js
+                
+                original_open = open
+                
+                def tracked_open(file, mode='r', *args, **kwargs):
+                    f = original_open(file, mode, *args, **kwargs)
+                    if 'w' in mode or 'a' in mode:
+                        js.trackFile(file)
+                    return f
+                
+                __builtins__.open = tracked_open
+                os.original_open = original_open
+            `);
+        }
+        
+        async function runCode() {
+            const code = document.getElementById('editor').value;
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            document.getElementById('status').textContent = 'RUNNING...';
+            document.getElementById('status').className = 'status running';
+            
+            try {
+                // Capture stdout
+                pyodide.setStdout({ batched: (text) => log(text, 'normal') });
+                pyodide.setStderr({ batched: (text) => log(text, 'error') });
+                
+                await pyodide.runPythonAsync(code);
+                
+                // Scan for new files
+                scanFiles();
+                
+                log('\n✓ Execution complete', 'success');
+                
+            } catch (e) {
+                log(e.message, 'error');
+            } finally {
+                document.getElementById('status').textContent = 'READY';
+                document.getElementById('status').className = 'status ready';
+            }
+        }
+        
+        function log(text, type) {
+            const output = document.getElementById('output');
+            const line = document.createElement('div');
+            line.className = `output-line ${type}`;
+            line.textContent = text;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function scanFiles() {
+            try {
+                const files = pyodide.FS.readdir('/home/pyodide/');
+                const validFiles = files.filter(f => f !== '.' && f !== '..');
+                
+                document.getElementById('tab-files').textContent = `FILES (${validFiles.length})`;
+                
+                const grid = document.getElementById('files-grid');
+                grid.innerHTML = '';
+                
+                validFiles.forEach(filename => {
+                    try {
+                        const path = `/home/pyodide/${filename}`;
+                        const stat = pyodide.FS.stat(path);
+                        const size = formatBytes(stat.size);
+                        
+                        const card = document.createElement('div');
+                        card.className = 'file-card';
+                        card.innerHTML = `
+                            <div class="file-actions">
+                                <div class="file-btn" onclick="event.stopPropagation(); downloadFile('${filename}')">↓</div>
+                                <div class="file-btn" onclick="event.stopPropagation(); deleteFile('${filename}')" style="border-color: #ff0055; color: #ff0055;">×</div>
+                            </div>
+                            <div class="file-icon">${getFileIcon(filename)}</div>
+                            <div class="file-name">${filename}</div>
+                            <div class="file-size">${size}</div>
+                        `;
+                        card.onclick = () => downloadFile(filename);
+                        grid.appendChild(card);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                });
+                
+                if (validFiles.length === 0) {
+                    grid.innerHTML = '<div class="info">No files generated yet.</div>';
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'wav': '🔊', 'mp3': '🎵', 'ogg': '🔊',
+                'xlsx': '📊', 'xls': '📊', 'csv': '📄',
+                'png': '🖼️', 'jpg': '🖼️', 'jpeg': '🖼️', 'gif': '🎨',
+                'pdf': '📕', 'txt': '📝', 'json': '⚙️', 'py': '🐍',
+                'zip': '📦', 'html': '🌐', 'js': '⚡', 'css': '🎨'
+            };
+            return icons[ext] || '📄';
+        }
+        
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function downloadFile(filename) {
+            try {
+                const path = `/home/pyodide/${filename}`;
+                const data = pyodide.FS.readFile(path);
+                
+                // Detect mime type
+                const ext = filename.split('.').pop().toLowerCase();
+                const mimeTypes = {
+                    'wav': 'audio/wav', 'mp3': 'audio/mpeg', 'ogg': 'audio/ogg',
+                    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'csv': 'text/csv', 'png': 'image/png', 'jpg': 'image/jpeg',
+                    'jpeg': 'image/jpeg', 'pdf': 'application/pdf', 'txt': 'text/plain',
+                    'json': 'application/json', 'html': 'text/html'
+                };
+                
+                const blob = new Blob([data], { type: mimeTypes[ext] || 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                log(`Downloaded: ${filename}`, 'success');
+            } catch (e) {
+                log(`Download failed: ${e.message}`, 'error');
+            }
+        }
+        
+        function deleteFile(filename) {
+            if (!confirm(`Delete ${filename}?`)) return;
+            try {
+                pyodide.FS.unlink(`/home/pyodide/${filename}`);
+                scanFiles();
+                log(`Deleted: ${filename}`, 'info');
+            } catch (e) {
+                log(`Delete failed: ${e.message}`, 'error');
+            }
+        }
+        
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            document.getElementById('console-panel').classList.add('hidden');
+            document.getElementById('files-panel').classList.add('hidden');
+            
+            if (tab === 'console') {
+                document.getElementById('console-panel').classList.remove('hidden');
+            } else {
+                document.getElementById('files-panel').classList.remove('hidden');
+                scanFiles();
+            }
+        }
+        
+        function clearEditor() {
+            document.getElementById('editor').value = '';
+        }
+        
+        function resetCode() {
+            document.getElementById('editor').value = defaultCode;
+        }
+        
+        function loadTemplate(type) {
+            const templates = {
+                audio: `# Generate WAV Audio
+import numpy as np
+import wave
+
+sample_rate = 44100
+duration = 3.0
+t = np.linspace(0, duration, int(sample_rate * duration), False)
+
+# Sawtooth wave
+freq = 440  # A4 note
+saw = (2 * (t * freq % 1) - 1)
+
+# Apply envelope
+envelope = np.exp(-t * 2)
+audio = saw * envelope
+
+# Convert to 16-bit
+audio = (audio * 32767).astype(np.int16)
+
+# Save
+with wave.open('synth_note.wav', 'w') as f:
+    f.setnchannels(1)
+    f.setsampwidth(2)
+    f.setframerate(sample_rate)
+    f.writeframes(audio.tobytes())
+
+print("✓ synth_note.wav generated")`,
+
+                excel: `# Generate Excel Report
+import pandas as pd
+from openpyxl import Workbook
+
+# Create data
+data = {
+    'Campaign': ['Google Ads', 'LinkedIn', 'Meta'],
+    'Spend': [5000, 3000, 2000],
+    'Leads': [150, 80, 45],
+    'CPL': [33.33, 37.50, 44.44]
+}
+
+df = pd.DataFrame(data)
+
+# Save with formatting
+with pd.ExcelWriter('marketing_report.xlsx', engine='openpyxl') as writer:
+    df.to_excel(writer, sheet_name='Performance', index=False)
+    
+print("✓ marketing_report.xlsx generated")
+print(df)`,
+
+                image: `# Generate PNG Image
+from PIL import Image, ImageDraw
+import numpy as np
+
+# Create gradient image
+width, height = 400, 400
+img = Image.new('RGB', (width, height))
+draw = ImageDraw.Draw(img)
+
+# Draw gradient
+for y in range(height):
+    r = int(255 * (y / height))
+    b = int(255 * (1 - y / height))
+    draw.line([(0, y), (width, y)], fill=(r, 0, b))
+
+# Add text
+draw.text((width/2-80, height/2), "WAKANDA", fill=(255, 255, 255))
+
+# Save
+img.save('gradient_art.png')
+print("✓ gradient_art.png generated")`
+            };
+            
+            document.getElementById('editor').value = templates[type] || '';
+        }
+        
+        // Expose to Python
+        window.trackFile = (filename) => {
+            console.log('File created:', filename);
+        };
+        
+        // Initialize
+        init();
+        
+        // Auto-save to localStorage
+        setInterval(() => {
+            const code = document.getElementById('editor').value;
+            if (code) localStorage.setItem('python_lab_code', code);
+        }, 5000);
+        
+        // Load from localStorage
+        window.onload = () => {
+            const saved = localStorage.getItem('python_lab_code');
+            if (saved) document.getElementById('editor').value = saved;
+        };
+    </script>
+</body>
+</html>
