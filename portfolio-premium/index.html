@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ashok Singh — Growth Systems Portfolio Concept</title>
+  <meta name="description" content="Premium portfolio concept for Ashok Singh: theory-driven growth systems, premium design language, and cinematic storytelling." />
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: rgba(12, 21, 39, 0.76);
+      --panel: rgba(11, 21, 38, 0.68);
+      --panel-strong: rgba(12, 22, 42, 0.88);
+      --line: rgba(138, 190, 255, 0.16);
+      --line-strong: rgba(138, 190, 255, 0.3);
+      --text: #f4f8ff;
+      --muted: #9fb3d1;
+      --cyan: #73e7ff;
+      --cyan-strong: #3bbdf2;
+      --amber: #ffbf72;
+      --violet: #9f8dff;
+      --success: #88ffc8;
+      --shadow: 0 20px 80px rgba(0, 0, 0, 0.38);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --container: min(1240px, calc(100vw - 48px));
+      --nav-height: 74px;
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      background:
+        radial-gradient(circle at top left, rgba(84, 150, 255, 0.2), transparent 28%),
+        radial-gradient(circle at top right, rgba(115, 231, 255, 0.16), transparent 26%),
+        linear-gradient(180deg, #08111f 0%, #050b14 100%);
+    }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(115, 231, 255, 0.08), transparent 0 25%),
+        radial-gradient(circle at 80% 10%, rgba(159, 141, 255, 0.1), transparent 0 20%),
+        linear-gradient(180deg, rgba(2, 7, 15, 0) 0%, rgba(2, 7, 15, 0.65) 100%);
+      overflow-x: hidden;
+    }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+    }
+    body::before {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 95%);
+    }
+    body::after {
+      background: radial-gradient(circle at center, rgba(59,189,242,0.12), transparent 45%);
+      filter: blur(70px);
+      z-index: -3;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+    .shell { width: var(--container); margin: 0 auto; }
+    .site-nav {
+      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(20px);
+      background: rgba(5, 11, 20, 0.62); border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .site-nav__inner {
+      min-height: var(--nav-height); display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .brand { display: grid; gap: 2px; }
+    .brand__eyebrow, .eyebrow, .chip, .kpi__label, .section-tag, .theory__meta, .footer-card__label {
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    }
+    .brand__name { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a { font-size: 13px; color: rgba(244,248,255,0.78); transition: color 180ms ease, transform 180ms ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--cyan); transform: translateY(-1px); }
+    .nav-cta, .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 999px; border: 1px solid transparent;
+      min-height: 48px; padding: 0 22px; font-weight: 600; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+    .nav-cta, .button--primary { background: linear-gradient(135deg, rgba(255,191,114,0.95), rgba(255,143,76,0.96)); color: #08111f; box-shadow: 0 16px 40px rgba(255, 161, 84, 0.24); }
+    .button--secondary { border-color: rgba(115,231,255,0.22); background: rgba(115,231,255,0.08); color: var(--text); }
+    .nav-cta:hover, .button:hover, .nav-cta:focus-visible, .button:focus-visible { transform: translateY(-2px); }
+    main { padding-bottom: 96px; }
+    section { padding: 84px 0; position: relative; }
+    .hero { padding-top: 54px; min-height: calc(100vh - var(--nav-height)); display: flex; align-items: center; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr); gap: 34px; align-items: center; }
+    .hero-copy { display: grid; gap: 24px; }
+    .hero h1, .section-heading h2, .cta-block h2 { margin: 0; letter-spacing: -0.04em; line-height: 0.94; }
+    .hero h1 { font-size: clamp(4rem, 8vw, 7rem); max-width: 11ch; }
+    .gradient-text { background: linear-gradient(135deg, #f8fbff 0%, #91ecff 42%, #b39cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-copy p, .section-heading p, .story-card p, .offer-card p, .faq-card p, .footer-card p, .system-card p, .memo, .quote-card p {
+      margin: 0; color: var(--muted); line-height: 1.75; font-size: 17px;
+    }
+    .hero-actions, .hero-meta, .cta-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .hero-meta { gap: 10px; }
+    .chip { padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: rgba(244,248,255,0.8); letter-spacing: 0.14em; }
+    .hero-panel, .surface, .story-card, .offer-card, .faq-card, .footer-card, .quote-card, .system-card, .kpi, .proof-strip {
+      background: linear-gradient(180deg, rgba(15,26,47,0.85), rgba(7,14,27,0.75)); border: 1px solid rgba(255,255,255,0.08); box-shadow: var(--shadow); backdrop-filter: blur(18px);
+    }
+    .hero-panel { border-radius: 32px; padding: 26px; position: relative; overflow: hidden; min-height: 640px; display: grid; align-items: end; }
+    .hero-panel canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0.92; }
+    .panel-overlay { position: relative; z-index: 1; display: grid; gap: 18px; padding-top: 320px; }
+    .section-tag { color: var(--cyan); }
+    .panel-metric { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .panel-metric > div { padding: 16px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .panel-metric strong, .kpi strong, .story-stat strong, .quote-card strong, .cta-proof strong { display: block; font-size: clamp(1.4rem, 4vw, 2.1rem); margin-bottom: 6px; color: var(--text); }
+    .surface { border-radius: var(--radius-xl); padding: 32px; }
+    .proof-strip { padding: 16px; border-radius: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: -36px; position: relative; z-index: 2; }
+    .kpi { padding: 22px; border-radius: 20px; min-height: 154px; display: grid; align-content: start; gap: 12px; }
+    .kpi__label { color: var(--cyan); }
+    .section-heading { max-width: 760px; display: grid; gap: 14px; margin-bottom: 34px; }
+    .section-heading h2, .cta-block h2 { font-size: clamp(2.5rem, 5vw, 4.4rem); }
+    .compare-grid, .story-grid, .offers-grid, .faq-grid, .systems-grid, .footer-grid { display: grid; gap: 18px; }
+    .compare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .story-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .offers-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .faq-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .systems-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .footer-grid { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
+    .compare-card, .story-card, .offer-card, .faq-card, .quote-card, .footer-card, .system-card { border-radius: var(--radius-lg); padding: 28px; position: relative; overflow: hidden; }
+    .compare-card::before, .story-card::before, .offer-card::before, .faq-card::before, .system-card::before, .footer-card::before {
+      content: ""; position: absolute; inset: auto -30% 0 auto; width: 180px; height: 180px; background: radial-gradient(circle, rgba(115,231,255,0.14), transparent 70%); filter: blur(6px); pointer-events: none;
+    }
+    .compare-card { display: grid; gap: 18px; min-height: 320px; background: linear-gradient(180deg, rgba(15,26,47,0.85), rgba(7,14,27,0.75)); border: 1px solid rgba(255,255,255,0.08); box-shadow: var(--shadow); }
+    .compare-card ul, .offer-card ul, .faq-card ul, .story-card ul, .system-card ul { margin: 0; padding-left: 18px; color: var(--muted); display: grid; gap: 10px; line-height: 1.7; }
+    .compare-card--after { border-color: rgba(115,231,255,0.24); background: linear-gradient(180deg, rgba(14,27,50,0.95), rgba(6,14,28,0.82)); }
+    .story-card, .offer-card, .faq-card, .system-card, .quote-card { display: grid; gap: 16px; }
+    .story-meta, .story-stat, .quote-card .eyebrow { color: var(--cyan); }
+    .story-stat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .story-stat > div { padding: 16px; border-radius: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+    .systems-grid .system-card:nth-child(2) { transform: translateY(24px); }
+    .systems-grid .system-card:nth-child(4) { transform: translateY(18px); }
+    .quote-card { margin-top: 18px; grid-template-columns: 1fr auto; align-items: end; }
+    .memo-wall { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; align-items: stretch; }
+    .memo-stack { display: grid; gap: 16px; }
+    .memo { border-radius: 20px; padding: 24px; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.08); box-shadow: var(--shadow); }
+    .memo strong { color: var(--amber); }
+    .cta-block {
+      padding: 42px; border-radius: 34px; display: grid; gap: 22px;
+      background: radial-gradient(circle at top left, rgba(255,191,114,0.12), transparent 28%), radial-gradient(circle at right center, rgba(115,231,255,0.14), transparent 30%), linear-gradient(180deg, rgba(14,28,50,0.95), rgba(8,17,31,0.96));
+      border: 1px solid rgba(255,255,255,0.09); box-shadow: var(--shadow);
+    }
+    .cta-proof { display: flex; flex-wrap: wrap; gap: 18px; color: var(--muted); }
+    .footer-card { min-height: 100%; }
+    .footer-links { display: grid; gap: 14px; margin-top: 12px; }
+    .footer-link {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); color: rgba(244,248,255,0.92);
+    }
+    .footer-link span:last-child { color: var(--cyan); }
+    .floating-note {
+      position: fixed; right: 22px; bottom: 22px; z-index: 15; display: inline-flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 999px;
+      background: rgba(7,13,24,0.78); border: 1px solid rgba(115,231,255,0.24); box-shadow: var(--shadow); backdrop-filter: blur(14px); color: rgba(244,248,255,0.92); font-size: 14px;
+    }
+    .floating-note strong { color: var(--amber); }
+    @media (max-width: 1180px) {
+      :root { --container: min(1120px, calc(100vw - 32px)); }
+      .hero-grid, .memo-wall, .footer-grid, .compare-grid { grid-template-columns: 1fr; }
+      .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .offers-grid, .systems-grid, .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .proof-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-panel { min-height: 560px; }
+      .systems-grid .system-card:nth-child(2), .systems-grid .system-card:nth-child(4) { transform: none; }
+    }
+    @media (max-width: 780px) {
+      :root { --container: min(100vw - 24px, 1000px); --nav-height: 66px; }
+      section { padding: 68px 0; }
+      .site-nav__inner { gap: 14px; }
+      .nav-links { overflow-x: auto; flex-wrap: nowrap; width: 100%; padding-bottom: 6px; justify-content: flex-start; }
+      .site-nav__inner { flex-direction: column; align-items: stretch; padding: 12px 0; }
+      .hero { padding-top: 34px; min-height: auto; }
+      .hero-panel { min-height: 500px; padding: 20px; }
+      .panel-overlay { padding-top: 260px; }
+      .proof-strip, .story-grid, .offers-grid, .faq-grid, .systems-grid, .panel-metric { grid-template-columns: 1fr; }
+      .quote-card { grid-template-columns: 1fr; }
+      .floating-note { display: none; }
+      .cta-block { padding: 30px; }
+    }
+    @media (max-width: 560px) {
+      .hero h1 { font-size: 3.3rem; }
+      .section-heading h2, .cta-block h2 { font-size: 2.35rem; }
+      .hero-copy p, .section-heading p, .story-card p, .offer-card p, .faq-card p, .footer-card p, .system-card p, .memo, .quote-card p { font-size: 15px; }
+      .surface, .story-card, .offer-card, .faq-card, .footer-card, .quote-card, .system-card, .compare-card { padding: 22px; }
+      .button, .nav-cta { width: 100%; }
+      .hero-actions, .cta-actions { display: grid; grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="shell site-nav__inner">
+      <div class="brand">
+        <span class="brand__eyebrow">Premium concept route</span>
+        <span class="brand__name">Ashok Singh / Growth Systems</span>
+      </div>
+      <div class="nav-links" aria-label="Section navigation">
+        <a href="#compare">Why it wins</a>
+        <a href="#stories">Proof</a>
+        <a href="#systems">Systems</a>
+        <a href="#offers">Offers</a>
+        <a href="#memes">Signal</a>
+        <a href="#contact" class="nav-cta">Book strategy session</a>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Compared against whoisashok.com, redesigned for stronger clarity + premium conversion</span>
+          <h1><span class="gradient-text">Theory-rich growth design</span> with Apple-grade restraint.</h1>
+          <p>
+            This concept keeps your equations, deterministic systems, and animated intelligence, but upgrades the experience with a clearer story, sharper hierarchy, warmer calls to action, and proof that feels like a premium consultancy rather than an experiment lab alone.
+          </p>
+          <div class="hero-actions">
+            <a class="button button--primary" href="#contact">Book a strategy call</a>
+            <a class="button button--secondary" href="#stories">See proof stories</a>
+          </div>
+          <div class="hero-meta">
+            <span class="chip">Theories stay</span>
+            <span class="chip">Animations stay</span>
+            <span class="chip">Conversion clarity improves</span>
+          </div>
+        </div>
+        <div class="hero-panel surface">
+          <canvas id="signal-canvas" aria-hidden="true"></canvas>
+          <div class="panel-overlay">
+            <span class="section-tag">Signal cockpit</span>
+            <h2>Less chaos on the page. More authority in the room.</h2>
+            <p>
+              The original site has a magnetic visual language. This concept evolves it into a premium story system: a cinematic hero, calibrated density, and deliberate moments of proof, offers, process, and contact.
+            </p>
+            <div class="panel-metric">
+              <div><strong>3x</strong><span class="kpi__label">Stronger CTA presence</span></div>
+              <div><strong>4</strong><span class="kpi__label">Commercial clarity layers</span></div>
+              <div><strong>1</strong><span class="kpi__label">Distinct premium narrative</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="shell" aria-label="Proof strip">
+      <div class="proof-strip">
+        <article class="kpi"><span class="kpi__label">Positioning</span><strong>Sharper</strong><p>Lead with what you do, who it is for, and why your systems thinking matters in business language.</p></article>
+        <article class="kpi"><span class="kpi__label">Motion</span><strong>Intentional</strong><p>Animation becomes a framing device, not the only source of energy on the page.</p></article>
+        <article class="kpi"><span class="kpi__label">Trust</span><strong>Expanded</strong><p>Case-story snapshots, operating model, and offer blocks make the experience feel boardroom-ready.</p></article>
+        <article class="kpi"><span class="kpi__label">Conversion</span><strong>Frictionless</strong><p>Visible CTAs, explicit next steps, and touch-friendly contact cards reduce decision fatigue.</p></article>
+      </div>
+    </section>
+    <section id="compare">
+      <div class="shell">
+        <div class="section-heading">
+          <span class="eyebrow">Comparison lens</span>
+          <h2>What was strong on <span class="gradient-text">whoisashok.com</span> — and what this version improves.</h2>
+          <p>
+            The live site already has a rare point of view: equations, theories, Lorenz attractor energy, and a high-intellect tone. The gap is not creativity. The gap is premium pacing, commercial readability, and a story arc that helps a buyer say “yes” faster.
+          </p>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-card">
+            <span class="eyebrow">Current strengths worth preserving</span>
+            <h3>Distinctive intellectual identity</h3>
+            <ul>
+              <li>Theories and mathematical metaphors immediately differentiate you from generic growth consultants.</li>
+              <li>The dark interface and animated chapters create memorability and designer-level ambition.</li>
+              <li>The section themes—acquisition, conversion, attribution, growth—already imply a systems worldview.</li>
+              <li>The site feels authored, not templated, which is a powerful advantage.</li>
+            </ul>
+          </article>
+          <article class="compare-card compare-card--after">
+            <span class="eyebrow">This concept adds</span>
+            <h3>Premium hierarchy and commercial confidence</h3>
+            <ul>
+              <li>A hero that translates your brilliance into immediate value instead of asking visitors to decode it first.</li>
+              <li>Warm accent usage for CTAs so the experience has focal points, not just ambience.</li>
+              <li>Dedicated proof stories, engagement models, FAQ, and contact pathways for serious buyers.</li>
+              <li>Cleaner spacing and restrained surfaces so the page feels more Apple, less overloaded sci-fi dashboard.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section id="stories">
+      <div class="shell">
+        <div class="section-heading">
+          <span class="eyebrow">Proof stories</span>
+          <h2>Show the systems working <span class="gradient-text">in business reality</span>.</h2>
+          <p>
+            The current live site speaks in theories. This concept adds mini case narratives so every abstract model has a visible commercial outcome attached to it.
+          </p>
+        </div>
+        <div class="story-grid">
+          <article class="story-card"><span class="story-meta">B2B SaaS / Pipeline design</span><h3>Rebuilt acquisition as a controlled gravity well.</h3><p>Used funnel mechanics, paid-media restructuring, and email recapture to turn scattered demand into a compounding revenue loop.</p><div class="story-stat"><div><strong>42%</strong><span>Lower blended CAC</span></div><div><strong>2.7x</strong><span>Qualified pipeline</span></div></div></article>
+          <article class="story-card"><span class="story-meta">High-ticket services / Conversion architecture</span><h3>Translated probabilistic conversion theory into page-level wins.</h3><p>Refined intent sequences, pricing communication, and landing page cues to reduce hesitation at the moment of decision.</p><div class="story-stat"><div><strong>31%</strong><span>Lift in booked calls</span></div><div><strong>18 days</strong><span>To first signal</span></div></div></article>
+          <article class="story-card"><span class="story-meta">Multi-channel brand / Attribution redesign</span><h3>Used network logic to expose the true conversion path.</h3><p>Mapped the journey as a graph, identified bottlenecks, and restored confidence in budget decisions through cleaner instrumentation.</p><div class="story-stat"><div><strong>220%</strong><span>Visibility gain</span></div><div><strong>5 hrs</strong><span>Weekly reporting saved</span></div></div></article>
+        </div>
+        <article class="quote-card"><div><span class="eyebrow">Senior designer recommendation</span><p>Keep the mathematical authority, but always pair it with one plain-English commercial sentence. That pairing is what makes the experience benchmark-level instead of merely impressive.</p></div><strong>Clarity is luxury.</strong></article>
+      </div>
+    </section>
+    <section id="systems">
+      <div class="shell">
+        <div class="section-heading">
+          <span class="eyebrow">Systems language</span>
+          <h2>Your theories deserve a <span class="gradient-text">better stage</span>.</h2>
+          <p>
+            Instead of only long theory blocks, this version turns each concept into a premium card with a model, a business meaning, and a visual pacing rhythm that feels cinematic at desktop size and readable on phones.
+          </p>
+        </div>
+        <div class="systems-grid">
+          <article class="system-card"><span class="theory__meta">01 / Acquisition</span><h3>Gravity wells</h3><p>Explain how attention bends toward offers with enough mass, then show the practical implication: channel mix, landing pages, and nurture timing.</p><ul><li>Business translation under every theorem</li><li>One visual metaphor per section</li></ul></article>
+          <article class="system-card"><span class="theory__meta">02 / Conversion</span><h3>Wave collapse</h3><p>Use quantum probability as the signature narrative, but reduce text density so the observation feels elegant instead of dense.</p><ul><li>More whitespace around critical copy</li><li>CTA visible inside the section rhythm</li></ul></article>
+          <article class="system-card"><span class="theory__meta">03 / Attribution</span><h3>Markov topology</h3><p>Turn the chain model into an executive-friendly block that reveals what to keep, cut, and automate.</p><ul><li>Decision-first summaries</li><li>Trust-building metrics near the visual</li></ul></article>
+          <article class="system-card"><span class="theory__meta">04 / Growth</span><h3>Fractal scaling</h3><p>Retain the Mandelbrot aura, but anchor it in unit economics, CAC thresholds, and board-level confidence.</p><ul><li>Better contrast between poetry and proof</li><li>Premium ending CTA instead of icon-only exit</li></ul></article>
+        </div>
+      </div>
+    </section>
+    <section id="offers">
+      <div class="shell">
+        <div class="section-heading">
+          <span class="eyebrow">Engagement design</span>
+          <h2>Make the offer architecture <span class="gradient-text">as strong as the visuals</span>.</h2>
+          <p>
+            One reason benchmark sites convert is that they remove ambiguity. This concept adds explicit ways to work with you without diluting the mystique.
+          </p>
+        </div>
+        <div class="offers-grid">
+          <article class="offer-card"><span class="eyebrow">Offer 01</span><h3>Signal Audit</h3><p>A rapid diagnostic on funnel physics, instrumentation, and messaging breakdowns.</p><ul><li>Executive summary</li><li>Opportunity map</li><li>Priority roadmap</li></ul></article>
+          <article class="offer-card"><span class="eyebrow">Offer 02</span><h3>System Design Sprint</h3><p>Design the acquisition-to-attribution machine across channels, pages, and automation flows.</p><ul><li>Full-stack strategy</li><li>Landing page direction</li><li>Measurement schema</li></ul></article>
+          <article class="offer-card"><span class="eyebrow">Offer 03</span><h3>Optimization Retainer</h3><p>Operate the machine weekly with controlled experiments, reporting, and iteration logic.</p><ul><li>Testing cadence</li><li>Decision reviews</li><li>Performance guardrails</li></ul></article>
+          <article class="offer-card"><span class="eyebrow">Offer 04</span><h3>Founder Advisory</h3><p>High-level counsel for teams that need a growth architect in the room without a full-time hire.</p><ul><li>Leadership sessions</li><li>Launch feedback</li><li>Go-to-market clarity</li></ul></article>
+        </div>
+      </div>
+    </section>
+    <section id="memes">
+      <div class="shell memo-wall">
+        <div>
+          <div class="section-heading">
+            <span class="eyebrow">Personality layer</span>
+            <h2>Add signal, not noise: <span class="gradient-text">smart meme placement</span>.</h2>
+            <p>
+              Your instinct to add memes is good, but only if they feel curated. They should release tension after dense theory, deepen memorability, and reinforce your point of view rather than making the work feel unserious.
+            </p>
+          </div>
+          <article class="cta-block">
+            <span class="eyebrow">Placement logic</span>
+            <h2>Use humor where attention naturally drops.</h2>
+            <p>
+              Best placements: after case studies, before FAQ, or inside an "operator notes" strip. Treat memes as editorial punctuation, not a separate gimmick page.
+            </p>
+            <div class="cta-proof"><div><strong>Mid-scroll</strong> retention reset</div><div><strong>Brand voice</strong> without undermining authority</div><div><strong>Shareability</strong> for social snippets</div></div>
+          </article>
+        </div>
+        <div class="memo-stack">
+          <article class="memo"><strong>Meme direction 01:</strong> “When the dashboard says ROAS is fine but sales says pipeline is dead.”</article>
+          <article class="memo"><strong>Meme direction 02:</strong> “Attribution models in the board meeting vs. what actually changed the buyer’s mind.”</article>
+          <article class="memo"><strong>Meme direction 03:</strong> “Everyone wants scale until CAC walks outside the Mandelbrot set.”</article>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="shell">
+        <div class="section-heading"><span class="eyebrow">Buyer objections</span><h2>Answer the serious questions <span class="gradient-text">before they are asked</span>.</h2></div>
+        <div class="faq-grid">
+          <article class="faq-card"><h3>Why this beats the current live site visually</h3><p>It keeps the same DNA but uses stronger spacing, richer surface design, clearer typography hierarchy, and better warmth around conversion moments.</p></article>
+          <article class="faq-card"><h3>Why it converts better</h3><p>Because buyers can quickly understand the offer, see proof, understand the process, and find an obvious next step without decoding every concept first.</p></article>
+          <article class="faq-card"><h3>Why it still feels like you</h3><p>Because the equations, theories, dark premium tone, and animation-led storytelling remain central; they are simply framed with more editorial discipline.</p></article>
+        </div>
+      </div>
+    </section>
+    <section id="contact">
+      <div class="shell footer-grid">
+        <article class="cta-block">
+          <span class="eyebrow">Final CTA</span>
+          <h2>Build the version clients remember <span class="gradient-text">and immediately trust</span>.</h2>
+          <p>
+            This route is designed as a separate concept so your existing app files stay untouched while you review a stronger premium direction. If approved, the same design language can be expanded into a full production portfolio.
+          </p>
+          <div class="cta-actions"><a class="button button--primary" href="mailto:hello@example.com">Email for availability</a><a class="button button--secondary" href="#compare">Review comparison</a></div>
+        </article>
+        <article class="footer-card">
+          <span class="footer-card__label">Suggested contact stack</span>
+          <h3>Give every buyer a clean path to say yes.</h3>
+          <p>Replace icon-only exits with explicit action cards, so the final section feels intentional and premium on both desktop and mobile.</p>
+          <div class="footer-links">
+            <a class="footer-link" href="mailto:hello@example.com"><span>Email intro</span><span>→</span></a>
+            <a class="footer-link" href="https://www.linkedin.com" target="_blank" rel="noreferrer"><span>LinkedIn conversation</span><span>→</span></a>
+            <a class="footer-link" href="https://cal.com" target="_blank" rel="noreferrer"><span>Book a strategy call</span><span>→</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <div class="floating-note">Standalone concept · <strong>/portfolio-premium/</strong></div>
+  <script>
+    const canvas = document.getElementById('signal-canvas');
+    const context = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+    let tick = 0;
+    function resizeCanvas() {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const bounds = canvas.getBoundingClientRect();
+      width = bounds.width;
+      height = bounds.height;
+      canvas.width = Math.floor(bounds.width * ratio);
+      canvas.height = Math.floor(bounds.height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+    function drawSignal() {
+      tick += 0.008;
+      context.clearRect(0, 0, width, height);
+      const grad = context.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, 'rgba(115,231,255,0.11)');
+      grad.addColorStop(0.55, 'rgba(159,141,255,0.06)');
+      grad.addColorStop(1, 'rgba(255,191,114,0.10)');
+      context.fillStyle = grad;
+      context.fillRect(0, 0, width, height);
+      for (let layer = 0; layer < 3; layer += 1) {
+        context.beginPath();
+        context.lineWidth = 1.2 + layer * 0.45;
+        context.strokeStyle = ['rgba(115,231,255,0.95)','rgba(159,141,255,0.75)','rgba(255,191,114,0.55)'][layer];
+        for (let x = 0; x <= width; x += 8) {
+          const amplitude = 44 + layer * 24;
+          const frequency = 0.012 + layer * 0.005;
+          const y = height * (0.28 + layer * 0.16) + Math.sin((x * frequency) + tick * (2.5 + layer)) * amplitude + Math.cos((x * frequency * 0.5) - tick * (1.2 + layer)) * (amplitude * 0.35);
+          if (x === 0) context.moveTo(x, y); else context.lineTo(x, y);
+        }
+        context.stroke();
+      }
+      for (let i = 0; i < 18; i += 1) {
+        const x = (width / 18) * i + (Math.sin(tick * 4 + i) * 18);
+        const y = height * 0.18 + ((i % 6) * height * 0.11) + Math.cos(tick * 3 + i) * 18;
+        const radius = 1.5 + (i % 3) * 1.1;
+        context.beginPath();
+        context.fillStyle = i % 5 === 0 ? 'rgba(255,191,114,0.85)' : 'rgba(115,231,255,0.65)';
+        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.fill();
+      }
+      requestAnimationFrame(drawSignal);
+    }
+    resizeCanvas();
+    drawSignal();
+    window.addEventListener('resize', resizeCanvas);
+  </script>
+</body>
+</html>
