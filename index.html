@@ -525,7 +525,12 @@ function animateHero(){
       camera.lookAt(scene.position);
       renderer.render(scene,camera);
     })();
-  }catch(e){console.warn('Three.js unavailable',e)}
+  }catch(e){
+    console.warn('Three.js unavailable',e);
+    // Graceful fallback: apply radial gradient background like mobile
+    canvas.style.display='none';
+    document.getElementById('hero').style.background='radial-gradient(ellipse at 50% 40%,rgba(10,132,255,.12),transparent 70%),#000';
+  }
 })();
 
 /* ========== NAV SCROLL ========== */
@@ -908,6 +913,7 @@ function registerCanvasClick(canvasId, theoryIdx){
     {q:"What does the Markov memoryless property mean for attribution?",opts:["First-click attribution is always correct","Last-click attribution is always correct","Transition probability depends only on current channel","All channels are equally weighted"],ans:2},
     {q:"In Mandelbrot unit economics, what do points outside the boundary represent?",opts:["Maximum ROI zone","Sustainable growth at any scale","CAC trajectories that diverge to infinity","Break-even point"],ans:2}
   ];
+  const PASSING_SCORE = 4;
   let current=0,score=0,answered=false;
   const qEl=$('#quiz-question'),oEl=$('#quiz-options'),nEl=$('#quiz-next'),pBar=$('#quiz-progress-bar'),resEl=$('#quiz-result'),container=$('#quiz-container');
   const badges=['A','B','C','D'];
@@ -941,7 +947,7 @@ function registerCanvasClick(canvasId, theoryIdx){
   });
   function showResult(){
     container.style.display='none';resEl.style.display='block';
-    const pass=score>=4;
+    const pass=score>=PASSING_SCORE;
     resEl.innerHTML='<div class="quiz-score '+(pass?'pass':'fail')+'">'+score+'/'+questions.length+'</div>'+
       '<p style="font-size:1.2rem;margin-bottom:1rem">'+(pass?'🏆 PASSED — The Architect':'❌ NOT YET — Keep studying')+'</p>'+
       (pass?'<p style="color:var(--gray4);font-size:.85rem">Contact section unlocked below.</p>':'<button class="btn btn-secondary" id="quiz-retry">Retry Quiz</button>');
