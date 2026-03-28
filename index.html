@@ -456,7 +456,8 @@ if(window.matchMedia('(pointer:fine)').matches){
   const c = $('#loader-canvas'), ctx = c.getContext('2d');
   let W,H; function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
   resize(); window.addEventListener('resize',resize);
-  const nodes=[];for(let i=0;i<80;i++) nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5});
+  const LOADER_NODE_COUNT=80;
+  const nodes=[];for(let i=0;i<LOADER_NODE_COUNT;i++) nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5});
   function drawNet(){
     ctx.clearRect(0,0,W,H);
     nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1});
@@ -507,7 +508,7 @@ function animateHero(){
     const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
     renderer.setSize(window.innerWidth,window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    const count=2000;
+    const count=window.devicePixelRatio>1?1200:2000;
     const geo=new THREE.BufferGeometry();
     const pos=new Float32Array(count*3);
     for(let i=0;i<count*3;i++) pos[i]=(Math.random()-.5)*8;
